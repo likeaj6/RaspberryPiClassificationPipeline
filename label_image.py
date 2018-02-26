@@ -31,7 +31,7 @@ def load_graph(model_file):
         graph_def.ParseFromString(f.read())
     with graph.as_default():
         tf.import_graph_def(graph_def)
-
+    # print(graph.get_operations())
     return graph
 
 def read_tensor_from_image_file(file_name, input_height=299, input_width=299,
@@ -69,14 +69,14 @@ def load_labels(label_file):
 if __name__ == "__main__":
     file_name = "./test.jpg"
     model_file = \
-    "tensorflow/examples/label_image/data/inception_v3_2016_08_28_frozen.pb"
-    label_file = "tensorflow/examples/label_image/data/imagenet_slim_labels.txt"
+    "./frozen_model_xception.pb"
+    label_file = "labels.txt"
     input_height = 299
     input_width = 299
     input_mean = 0
     input_std = 255
-    input_layer = "input"
-    output_layer = "InceptionV3/Predictions/Reshape_1"
+    input_layer = "Placeholder_only"
+    output_layer = "Xception/Predictions/Softmax"
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--image", help="image to be processed")
@@ -116,8 +116,8 @@ if __name__ == "__main__":
                                   input_mean=input_mean,
                                   input_std=input_std)
 
-    input_name = "import/" + input_layer
-    output_name = "import/" + output_layer
+    input_name = 'import/' + input_layer
+    output_name = 'import/' + output_layer
     input_operation = graph.get_operation_by_name(input_name);
     output_operation = graph.get_operation_by_name(output_name);
 
@@ -126,7 +126,7 @@ if __name__ == "__main__":
                       {input_operation.outputs[0]: t})
     results = np.squeeze(results)
 
-    top_k = results.argsort()[-5:][::-1]
+    top_k = results.argsort()[-6:][::-1]
     labels = load_labels(label_file)
     for i in top_k:
         print(labels[i], results[i])
