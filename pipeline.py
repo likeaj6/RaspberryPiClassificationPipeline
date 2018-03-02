@@ -5,6 +5,8 @@ import numpy as np
 from datetime import datetime
 # from uploadFile import upload
 
+from label_image import infer_image, prep_numpy
+
 import boto3
 
 s3 = boto3.client('s3')
@@ -55,13 +57,17 @@ def main():
     # Capture the image in RGB format
     filename = getDateTime() + '.jpg'
     stream = open(IMAGE_DIRECTORY + filename, 'w+b')
-    #while True:
-    with picamera.PiCamera() as camera:
-        setUpCamera(camera)
-        camera.start_preview()
-        #while True:
-        time.sleep(5)
-        camera.capture(stream)
-        upload(filename)
+    with tf.Session(graph=graph) as sess:
+        with picamera.PiCamera() as camera:
+            setUpCamera(camera)
+            camera.start_preview()
+            while True:
+                # time.sleep(5)
+                # livestream mode:
+                camera.capture(stream)
+                npImage = convertStreamToNumpy(stream)
+                preprocessed = prep_numpy(npImage)
+                infer_image(sess, input_operation, output_operation, preprocessed, WIDTH, HEIGHT)
+                upload(filename)
 
 main()
