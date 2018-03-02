@@ -2,7 +2,16 @@ from __future__ import division
 import time
 import picamera
 import numpy as np
-import datetime
+from datetime import datetime
+# from uploadFile import upload
+
+import boto3
+
+s3 = boto3.client('s3')
+bucket_name = 'trashdataset'
+
+def upload(filename):
+    s3.upload_file('images/' + filename, bucket_name, 'images/{}'.format(filename))
 
 #If we use this, we'd replace camera.capture with:
 # camera.start_recording(
@@ -11,18 +20,18 @@ import datetime
 #         # Record motion data to our custom output object
 #         motion_output=FrameMotionDetector(camera)
 #         )
-from motion_detection import FrameMotionDetector
+# from motion_detection import FrameMotionDetector
 
 WIDTH = 299
 HEIGHT = 299
+IMAGE_DIRECTORY = './images/'
 
 def setUpCamera(camera):
     camera.flash_mode = 'auto'
     camera.resolution = (WIDTH, HEIGHT)
 
 def getDateTime():
-    now = datetime.datetime.now()
-    return now.year + '-' + now.month + '-' + now.day + '_' + now.hour + ':' + now.minute + '-' now.second
+    return datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
 def convertStreamToNumpy(stream):
     # Rewind the stream for reading
@@ -44,9 +53,15 @@ def convertStreamToNumpy(stream):
 
 def main():
     # Capture the image in RGB format
-    stream = open(getDateTime() + '.data', 'w+b')
+    filename = getDateTime() + '.jpg'
+    stream = open(IMAGE_DIRECTORY + filename, 'w+b')
+    #while True:
     with picamera.PiCamera() as camera:
         setUpCamera(camera)
         camera.start_preview()
-        time.sleep(2)
-        camera.capture(stream, 'rgb')
+        #while True:
+        time.sleep(5)
+        camera.capture(stream)
+        upload(filename)
+
+main()
