@@ -6,16 +6,13 @@ import time
 
 def measure():
     # This function measures a distance
-    # GPIO.output(TRIGGER, True)
-    # time.sleep(0.00001)
-    # GPIO.output(TRIGGER, False)
+    GPIO.output(TRIGGER, True)
+    time.sleep(0.00001)
+    GPIO.output(TRIGGER, False)
     start = time.time()
-    print("GPIO.ECHO == 0")
 
-    while GPIO.input(ECHO)==0:
+    while GPIO.input(ECHO) == 0:
         start = time.time()
-
-    print("GPIO.ECHO == 1")
 
     while GPIO.input(ECHO)==1:
         stop = time.time()
@@ -25,12 +22,24 @@ def measure():
 
     return distance
 
+def measure_average():
+    # This function takes 3 measurements and
+    # returns the average.
+    distance1=measure()
+    time.sleep(0.1)
+    distance2=measure()
+    time.sleep(0.1)
+    distance3=measure()
+    distance = distance1 + distance2 + distance3
+    distance = distance / 3
+    return distance
+
 GPIO.setmode(GPIO.BCM)
 
-TRIGGER = 29
-ECHO = 27
+TRIGGER = 21
+ECHO = 20
 
-# GPIO.setup(TRIGGER,GPIO.OUT)  # Trigger
+GPIO.setup(TRIGGER,GPIO.OUT)  # Trigger
 GPIO.setup(ECHO,GPIO.IN)      # Echo
 
 # Set trigger to False (Low)
@@ -43,7 +52,7 @@ GPIO.setup(ECHO,GPIO.IN)      # Echo
 # messages.
 try:
     while True:
-        distance = measure()
+        distance = measure_average()
         print("Distance: ", distance)
         time.sleep(1)
 
