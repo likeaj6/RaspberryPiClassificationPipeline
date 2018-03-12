@@ -5,22 +5,25 @@ import RPi.GPIO as GPIO
 import time
 
 def measure():
-  # This function measures a distance
-  GPIO.output(TRIGGER, True)
-  time.sleep(0.00001)
-  GPIO.output(TRIGGER, False)
-  start = time.time()
-
-  while GPIO.input(ECHO)==0:
+    # This function measures a distance
+    GPIO.output(TRIGGER, True)
+    time.sleep(0.00001)
+    GPIO.output(TRIGGER, False)
     start = time.time()
+    print("GPIO.ECHO == 0")
 
-  while GPIO.input(ECHO)==1:
-    stop = time.time()
+    while GPIO.input(ECHO)==0:
+        start = time.time()
 
-  elapsed = stop-start
-  distance = (elapsed * 34300)/2
+    print("GPIO.ECHO == 1")
 
-  return distance
+    while GPIO.input(ECHO)==1:
+        stop = time.time()
+
+    elapsed = stop-start
+    distance = (elapsed * 34300)/2
+
+    return distance
 
 GPIO.setmode(GPIO.BCM)
 
@@ -39,15 +42,15 @@ GPIO.output(TRIGGER, False)
 # the user seeing lots of unnecessary error
 # messages.
 try:
-  while True:
-    distance = measure()
-    print("Distance: ", distance)
-    time.sleep(1)
+    while True:
+        distance = measure()
+        print("Distance: ", distance)
+        time.sleep(1)
 
 except KeyboardInterrupt:
-  # User pressed CTRL-C
-  # Reset GPIO settings
-  GPIO.cleanup()
+    # User pressed CTRL-C
+    # Reset GPIO settings
+    GPIO.cleanup()
 
 # In case getting Ultrasonic Sensors to work is too much of a hassle, we'll use built in crude analysis based on frames
 
