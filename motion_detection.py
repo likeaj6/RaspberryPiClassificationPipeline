@@ -6,9 +6,9 @@ import time
 
 def measure():
     # This function measures a distance
-    GPIO.output(TRIGGER, True)
-    time.sleep(0.00001)
-    GPIO.output(TRIGGER, False)
+    # GPIO.output(TRIGGER, True)
+    # time.sleep(0.00001)
+    # GPIO.output(TRIGGER, False)
     start = time.time()
     print("GPIO.ECHO == 0")
 
@@ -30,11 +30,11 @@ GPIO.setmode(GPIO.BCM)
 TRIGGER = 29
 ECHO = 27
 
-GPIO.setup(TRIGGER,GPIO.OUT)  # Trigger
+# GPIO.setup(TRIGGER,GPIO.OUT)  # Trigger
 GPIO.setup(ECHO,GPIO.IN)      # Echo
 
 # Set trigger to False (Low)
-GPIO.output(TRIGGER, False)
+# GPIO.output(TRIGGER, False)
 
 # Wrap main content in a try block so we can
 # catch the user pressing CTRL-C and run the
