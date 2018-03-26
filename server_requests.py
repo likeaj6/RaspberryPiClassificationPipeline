@@ -13,4 +13,4 @@ def buttonFeedbackRequest(classification):
         res = requests.get(URL + '/feedback/' + PI_ID + '?classification=' + classification)
         return res
 
-motionDetectedRequest()
+# motionDetectedRequest()

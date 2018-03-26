@@ -91,7 +91,6 @@ def main():
             print('Motion Detected!')
             IMAGE_DETECTED = True
             # camera.capture(stream)
-            print('Taking Picture!')
 
             server_requests.motionDetectedRequest()
             print('Sending request!')
@@ -99,11 +98,13 @@ def main():
             # print('Uploading image')
 
             classification = feedback_buttons.getButtonFeedback()
+            print('GETTING USER FEEDBACK')
             print(classification)
             server_requests.buttonFeedbackRequest(classification)
 
             IMAGE_DETECTED = False
             break
+        break
 
             # npImage = convertStreamToNumpy(stream)
             # preprocessed = prep_numpy(npImage)
