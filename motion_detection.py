@@ -103,9 +103,9 @@ def measure_distance(tolerance=20):
                 # hang out and do nothing for a half second
 def run_average():
     distance1=measure_distance()
-    time.sleep(0.1)
+    time.sleep(0.03)
     distance2=measure_distance()
-    time.sleep(0.1)
+    time.sleep(0.03)
     distance3=measure_distance()
     distance = distance1 + distance2 + distance3
     distance = distance / 3
