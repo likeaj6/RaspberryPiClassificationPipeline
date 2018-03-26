@@ -1,9 +1,10 @@
 import RPi.GPIO as GPIO
 
+GPIO.setmode(GPIO.BCM)
+
 TRASH_PIN = 20
 RECYCLE_PIN = 16
 COMPOST_PIN = 21
-
 
 GPIO.setup(TRASH_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(RECYCLE_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
