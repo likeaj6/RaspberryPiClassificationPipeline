@@ -60,43 +60,54 @@ GPIO.setup(SPICS, GPIO.OUT)
 # 10k trim pot connected to adc #0
 ultra_adc = 0;
 
-last_read = 0       # this keeps track of the last potentiometer value
-tolerance = 20       # to keep from being jittery we'll only change
-                    # volume when the pot has moved more than 5 'counts'
 
 def read_ultra_inches():
     return readadc(ultra_adc, SPICLK, SPIMOSI, SPIMISO, SPICS) / 9.8
 
+def measure_distance(tolerance=20):
+    last_read
+    last_read = 0       # this keeps track of the last potentiometer value
+    # volume when the pot has moved more than 5 'counts'
+    # assume no change
+    changed = False
+
+    # read the analog pin
+    read = readadc(ultra_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
+    # how much has it changed since the last read?
+    pot_adjust = abs(read - last_read)
+
+    if DEBUG:
+        print "read:", read
+        print "pot_adjust:", pot_adjust
+        print "last_read", last_read
+
+        if ( pot_adjust > tolerance ):
+            changed = True
+
+            if DEBUG:
+                print("changed", changed)
+
+            if ( changed or True):
+                adjusted = read / 10.24             # convert 10bit adc0 (0-1024) read into 0-100
+                adjusted = round(adjusted)          # round out decimal value
+                adjusted = int(adjusted)            # cast as integer
+
+                print(read)
+
+                # save the potentiometer reading for the next loop
+                last_read = read
+
+                return read
+                # hang out and do nothing for a half second
+def run_average():
+    distance1=measure_distance()
+    time.sleep(0.3)
+    distance2=measure_distance()
+    time.sleep(0.3)
+    distance3=measure_distance()
+    distance = distance1 + distance2 + distance3
+    distance = distance / 3
+    return distance
+
 if __name__ == "__main__":
         while True:
-                # assume no change
-                changed = False
-
-                # read the analog pin
-                read = readadc(ultra_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
-                # how much has it changed since the last read?
-                pot_adjust = abs(read - last_read)
-
-                if DEBUG:
-                        print "read:", read
-                        print "pot_adjust:", pot_adjust
-                        print "last_read", last_read
-
-                if ( pot_adjust > tolerance ):
-                       changed = True
-
-                if DEBUG:
-                        print "changed", changed
-
-                if ( changed or True):
-                        adjusted = read / 10.24             # convert 10bit adc0 (0-1024) read into 0-100
-                        adjusted = round(adjusted)          # round out decimal value
-                        adjusted = int(adjusted)            # cast as integer
-
-                        print read
-
-                        # save the potentiometer reading for the next loop
-                        last_read = read
-
-                # hang out and do nothing for a half second
-                time.sleep(0.5)
