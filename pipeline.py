@@ -83,29 +83,28 @@ def main():
     #with tf.Session(graph=graph) as sess:
     while True:
         print('in loop!')
-        with picamera.PiCamera() as camera:
-            setUpCamera(camera)
+        # with picamera.PiCamera() as camera:
+            # setUpCamera(camera)
             # camera.start_preview()
-            while True:
-                # livestream mode:
-                if run_average() <= 50 and not IMAGE_DETECTED:
-                    print('Motion Detected!')
-                    IMAGE_DETECTED = True
-                    # camera.capture(stream)
-                    print('Taking Picture!')
+            # livestream mode:
+        if run_average() <= 50 and not IMAGE_DETECTED:
+            print('Motion Detected!')
+            IMAGE_DETECTED = True
+            # camera.capture(stream)
+            print('Taking Picture!')
 
-                    server_requests.motionDetectedRequest()
-                    print('Sending request!')
-                    # upload(filename)
-                    # print('Uploading image')
+            server_requests.motionDetectedRequest()
+            print('Sending request!')
+            # upload(filename)
+            # print('Uploading image')
 
-                    time.sleep(3)
-                    classification = feedback_buttons.getButtonFeedback()
-                    server_requests.buttonFeedbackRequest(classification)
+            time.sleep(3)
+            classification = feedback_buttons.getButtonFeedback()
+            server_requests.buttonFeedbackRequest(classification)
 
-                    IMAGE_DETECTED = False
-                    # npImage = convertStreamToNumpy(stream)
-                    # preprocessed = prep_numpy(npImage)
-                    # infer_image(sess, input_operation, output_operation, preprocessed, WIDTH, HEIGHT)
+            IMAGE_DETECTED = False
+            # npImage = convertStreamToNumpy(stream)
+            # preprocessed = prep_numpy(npImage)
+            # infer_image(sess, input_operation, output_operation, preprocessed, WIDTH, HEIGHT)
 
 main()
