@@ -5,6 +5,7 @@ import numpy as np
 from datetime import datetime
 # from uploadFile import upload
 from motion_detection import run_average
+from constants import *
 import server_requests
 import feedback_buttons
 # from label_image import infer_image, prep_numpy
@@ -56,14 +57,26 @@ def convertStreamToNumpy(stream):
     print(type(image))
     return image
 
-
+def setUpGPIO():
+    GPIO.setmode(GPIO.BCM)
+    # set up the SPI interface pins
+    GPIO.setup(SPIMOSI, GPIO.OUT)
+    GPIO.setup(SPIMISO, GPIO.IN)
+    GPIO.setup(SPICLK, GPIO.OUT)
+    GPIO.setup(SPICS, GPIO.OUT)
+    GPIO.setup(TRASH_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(RECYCLE_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(COMPOST_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 def main():
+    print('Setting up GPIO')
+    setUpGPIO()
     # Capture the image in RGB format
     filename = getDateTime() + '.jpg'
     stream = open(IMAGE_DIRECTORY + filename, 'w+b')
     #with tf.Session(graph=graph) as sess:
     while True:
+        print('in loop!')
         with picamera.PiCamera() as camera:
             setUpCamera(camera)
             camera.start_preview()
@@ -81,8 +94,8 @@ def main():
                     upload(filename)
                     print('Uploading image')
 
-                    time.sleep(3)
-                    feedback_buttons.getButtonFeedback()
+                    # time.sleep(3)
+                    # feedback_buttons.getButtonFeedback()
                     # npImage = convertStreamToNumpy(stream)
                     # preprocessed = prep_numpy(npImage)
                     # infer_image(sess, input_operation, output_operation, preprocessed, WIDTH, HEIGHT)
