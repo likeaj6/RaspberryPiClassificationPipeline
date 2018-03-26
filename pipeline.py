@@ -91,13 +91,13 @@ def main():
                 if run_average() <= 50 and not IMAGE_DETECTED:
                     print('Motion Detected!')
                     IMAGE_DETECTED = True
-                    camera.capture(stream)
+                    # camera.capture(stream)
                     print('Taking Picture!')
 
                     server_requests.motionDetectedRequest()
                     print('Sending request!')
-                    upload(filename)
-                    print('Uploading image')
+                    # upload(filename)
+                    # print('Uploading image')
 
                     time.sleep(3)
                     classification = feedback_buttons.getButtonFeedback()
