@@ -67,7 +67,6 @@ def read_ultra_inches():
     return readadc(ultra_adc, SPICLK, SPIMOSI, SPIMISO, SPICS) / 9.8
 
 def measure_distance(tolerance=20):
-    last_read
     last_read = 0       # this keeps track of the last potentiometer value
     # volume when the pot has moved more than 5 'counts'
     # assume no change
@@ -110,7 +109,7 @@ def run_average():
     distance = distance1 + distance2 + distance3
     distance = distance / 3
     return distance
-# 
+#
 # if __name__ == "__main__":
 #     run_average()
         # while True:
