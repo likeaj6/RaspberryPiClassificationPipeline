@@ -10,14 +10,23 @@ class ResetThread(threading.Thread):
     def __init__(self, time=10):
         super(ResetThread, self).__init__()
         global reset
+        self.running = False
         reset = False
         self.time = time
+
+    def start(self):
+        self.running = True
+        super(ResetThread, self).start()
 
     def run(self):
         global reset
         time.sleep(self.time)
-        reset = True
+        if self.running:
+            reset = True
+        return 
 
+    def stop(self):
+        self.running = False
 
 def setUpGPIO():
     GPIO.setmode(GPIO.BCM)
@@ -43,14 +52,17 @@ def getButtonFeedback():
         if GPIO.input(RECYCLE_PIN) and mode != 'Recycle':
             print('RECYCLE')
             mode = "Recycle"
+            reset_thread.stop()
             return mode
         elif GPIO.input(TRASH_PIN) and mode != 'Trash':
             print("TRASH")
             mode = "Trash"
+            reset_thread.stop()
             return mode
         elif GPIO.input(COMPOST_PIN) and mode != 'Compost':
             print("COMPOST")
             mode = "Compost"
+            reset_thread.stop()
             return mode
         time.sleep(0.15)
     #if not(GPIO.input(COMPOST_PIN)):

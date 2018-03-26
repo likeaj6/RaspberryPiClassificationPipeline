@@ -100,6 +100,7 @@ def main():
             classification = feedback_buttons.getButtonFeedback()
 
             if classification == None:
+                IMAGE_DETECTED = False
                 pass
             else:
                 print('GETTING USER FEEDBACK')
