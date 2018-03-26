@@ -1,4 +1,6 @@
 import RPi.GPIO as GPIO
+import time
+
 
 GPIO.setmode(GPIO.BCM)
 
@@ -10,17 +12,16 @@ GPIO.setup(TRASH_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(RECYCLE_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(COMPOST_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-prev = None
+mode = None
 
 while True:
-    if GPIO.input(RECYCLE_PIN) and mode != "RECYCLE":
-        print_mode('RECYCLE')
+    if GPIO.input(RECYCLE_PIN) and mode != 'RECYCLE':
+        print('RECYCLE')
         mode = "RECYCLE"
-    elif GPIO.input(TRASH_PIN) and mode != "TRASH":
-        print_mode("TRASH")
+    elif GPIO.input(TRASH_PIN) and mode != 'TRASH':
+        print("TRASH")
         mode = "TRASH"
-    else:
-        mode = None
+    time.sleep(0.15)
     #if not(GPIO.input(COMPOST_PIN)):
         #print_mode("COMPOST")
 GPIO.cleanup()
