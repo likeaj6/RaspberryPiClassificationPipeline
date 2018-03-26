@@ -83,23 +83,23 @@ def measure_distance(tolerance=20):
         print("pot_adjust:", pot_adjust)
         print("last_read", last_read)
 
-        if ( pot_adjust > tolerance ):
-            changed = True
+    if ( pot_adjust > tolerance ):
+        changed = True
 
-            if DEBUG:
-                print("changed", changed)
+    if DEBUG:
+        print("changed", changed)
 
-            if ( changed or True):
-                adjusted = read / 10.24             # convert 10bit adc0 (0-1024) read into 0-100
-                adjusted = round(adjusted)          # round out decimal value
-                adjusted = int(adjusted)            # cast as integer
+    if (changed or True):
+        adjusted = read / 10.24             # convert 10bit adc0 (0-1024) read into 0-100
+        adjusted = round(adjusted)          # round out decimal value
+        adjusted = int(adjusted)            # cast as integer
 
-                print(read)
+        print(read)
 
-                # save the potentiometer reading for the next loop
-                last_read = read
+        # save the potentiometer reading for the next loop
+        last_read = read
 
-                return read
+        return read
                 # hang out and do nothing for a half second
 def run_average():
     distance1=measure_distance()
