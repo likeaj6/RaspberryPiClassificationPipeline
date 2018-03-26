@@ -77,9 +77,9 @@ def measure_distance(tolerance=20):
     pot_adjust = abs(read - last_read)
 
     if DEBUG:
-        print "read:", read
-        print "pot_adjust:", pot_adjust
-        print "last_read", last_read
+        print("read:", read)
+        print("pot_adjust:", pot_adjust)
+        print("last_read", last_read)
 
         if ( pot_adjust > tolerance ):
             changed = True
