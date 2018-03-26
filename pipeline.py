@@ -87,7 +87,7 @@ def main():
             # setUpCamera(camera)
             # camera.start_preview()
             # livestream mode:
-        if run_average() <= 50 and not IMAGE_DETECTED:
+        if run_average() <= 40 and not IMAGE_DETECTED:
             print('Motion Detected!')
             IMAGE_DETECTED = True
             # camera.capture(stream)
@@ -97,12 +97,14 @@ def main():
             print('Sending request!')
             # upload(filename)
             # print('Uploading image')
-            
+
             classification = feedback_buttons.getButtonFeedback()
+            print(classification)
             server_requests.buttonFeedbackRequest(classification)
 
-
             IMAGE_DETECTED = False
+            break
+
             # npImage = convertStreamToNumpy(stream)
             # preprocessed = prep_numpy(npImage)
             # infer_image(sess, input_operation, output_operation, preprocessed, WIDTH, HEIGHT)
