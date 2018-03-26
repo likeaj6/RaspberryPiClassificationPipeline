@@ -26,8 +26,12 @@ def getButtonFeedback():
             print("TRASH")
             mode = "Trash"
             return mode
+        elif GPIO.input(COMPOST_PIN) and mode != 'Compost':
+            print("COMPOST")
+            mode = "Compost"
+            return mode
         time.sleep(0.15)
     #if not(GPIO.input(COMPOST_PIN)):
         #print_mode("COMPOST")
-
+#getButtonFeedback(i)
 # GPIO.cleanup()
