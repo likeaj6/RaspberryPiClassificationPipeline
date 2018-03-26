@@ -70,11 +70,13 @@ def setUpGPIO():
     GPIO.setup(RECYCLE_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(COMPOST_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-IMAGE_DETECTED = False
 
 def main():
     print('Setting up GPIO')
     setUpGPIO()
+
+    IMAGE_DETECTED = False
+
     # Capture the image in RGB format
     filename = getDateTime() + '.jpg'
     stream = open(IMAGE_DIRECTORY + filename, 'w+b')
@@ -83,7 +85,7 @@ def main():
         print('in loop!')
         with picamera.PiCamera() as camera:
             setUpCamera(camera)
-            camera.start_preview()
+            # camera.start_preview()
             while True:
                 # livestream mode:
                 if run_average() <= 50 and not IMAGE_DETECTED:
