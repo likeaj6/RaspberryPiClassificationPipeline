@@ -21,11 +21,11 @@ def getButtonFeedback():
         if GPIO.input(RECYCLE_PIN) and mode != 'Recycle':
             print('RECYCLE')
             mode = "Recycle"
-
+            return mode
         elif GPIO.input(TRASH_PIN) and mode != 'Trash':
             print("TRASH")
             mode = "Trash"
-        return mode
+            return mode
         time.sleep(0.15)
     #if not(GPIO.input(COMPOST_PIN)):
         #print_mode("COMPOST")
