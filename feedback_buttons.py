@@ -1,7 +1,23 @@
 import RPi.GPIO as GPIO
 import time
+import threading
 
 from constants import *
+
+reset = False
+
+class ResetThread(threading.Thread):
+    def __init__(self, time=10):
+        super(ResetThread, self).__init__()
+        global reset
+        reset = False
+        self.time = time
+
+    def run(self):
+        global reset
+        time.sleep(self.time)
+        reset = True
+
 
 def setUpGPIO():
     GPIO.setmode(GPIO.BCM)
@@ -15,9 +31,15 @@ def setUpGPIO():
     GPIO.setup(COMPOST_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 def getButtonFeedback():
+    global reset
+    reset_thread = ResetThread(10)
+    reset_thread.start()
+
     mode = None
 
     while True:
+        if reset:
+            return None
         if GPIO.input(RECYCLE_PIN) and mode != 'Recycle':
             print('RECYCLE')
             mode = "Recycle"
