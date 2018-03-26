@@ -28,4 +28,4 @@ def getButtonFeedback():
     #if not(GPIO.input(COMPOST_PIN)):
         #print_mode("COMPOST")
 
-GPIO.cleanup()
+# GPIO.cleanup()
