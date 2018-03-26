@@ -4,7 +4,9 @@ import picamera
 import numpy as np
 from datetime import datetime
 # from uploadFile import upload
-
+from motion_detection import run_average
+import server_requests
+import feedback_buttons
 # from label_image import infer_image, prep_numpy
 
 import boto3
@@ -54,21 +56,35 @@ def convertStreamToNumpy(stream):
     print(type(image))
     return image
 
+
+
 def main():
     # Capture the image in RGB format
     filename = getDateTime() + '.jpg'
     stream = open(IMAGE_DIRECTORY + filename, 'w+b')
     #with tf.Session(graph=graph) as sess:
-    with picamera.PiCamera() as camera:
-        setUpCamera(camera)
-        camera.start_preview()
-        #while True:
-        time.sleep(5)
-            # livestream mode:
-        camera.capture(stream)
-            # npImage = convertStreamToNumpy(stream)
-            # preprocessed = prep_numpy(npImage)
-            # infer_image(sess, input_operation, output_operation, preprocessed, WIDTH, HEIGHT)
-        upload(filename)
+    while True:
+        with picamera.PiCamera() as camera:
+            setUpCamera(camera)
+            camera.start_preview()
+            while True:
+                print('Camera Setup!')
+                # livestream mode:
+                if run_average() <= 50:
+                    print('Motion Detected!')
+
+                    camera.capture(stream)
+                    print('Taking Picture!')
+
+                    server_requests.motionDetectedRequest()
+                    print('Sending request!')
+                    upload(filename)
+                    print('Uploading image')
+
+                    time.sleep(3)
+                    feedback_buttons.getButtonFeedback()
+                    # npImage = convertStreamToNumpy(stream)
+                    # preprocessed = prep_numpy(npImage)
+                    # infer_image(sess, input_operation, output_operation, preprocessed, WIDTH, HEIGHT)
 
 main()
