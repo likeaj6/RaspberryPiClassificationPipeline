@@ -70,6 +70,8 @@ def setUpGPIO():
     GPIO.setup(RECYCLE_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(COMPOST_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
+IMAGE_DETECTED = False
+
 def main():
     print('Setting up GPIO')
     setUpGPIO()
@@ -83,11 +85,10 @@ def main():
             setUpCamera(camera)
             camera.start_preview()
             while True:
-                print('Camera Setup!')
                 # livestream mode:
-                if run_average() <= 50:
+                if run_average() <= 50 && !IMAGE_DETECTED:
                     print('Motion Detected!')
-
+                    IMAGE_DETECTED = True
                     camera.capture(stream)
                     print('Taking Picture!')
 
@@ -96,8 +97,9 @@ def main():
                     upload(filename)
                     print('Uploading image')
 
-                    # time.sleep(3)
-                    # feedback_buttons.getButtonFeedback()
+                    time.sleep(3)
+                    classification = feedback_buttons.getButtonFeedback()
+                    server_requests.buttonFeedbackRequest(classification)
                     # npImage = convertStreamToNumpy(stream)
                     # preprocessed = prep_numpy(npImage)
                     # infer_image(sess, input_operation, output_operation, preprocessed, WIDTH, HEIGHT)
