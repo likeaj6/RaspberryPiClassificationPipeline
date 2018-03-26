@@ -17,7 +17,7 @@ def debounce(wait):
             debounced.t = Timer(wait, call_it)
             debounced.t.start()
         return debounced
-return decorator
+    return decorator
 
 GPIO.setmode(GPIO.BCM)
 
