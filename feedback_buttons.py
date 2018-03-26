@@ -12,9 +12,9 @@ GPIO.setup(RECYCLING_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(COMPOST_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 while True:
-    if (not(GPIO.input(COMPOST_PIN)):
+    if not(GPIO.input(RECYCLING_PIN)):
         print('RECYCLING')
-    if not(GPIO.input(COMPOST_PIN)):
+    if not(GPIO.input(TRASH_PIN)):
         print("TRASH")
     if not(GPIO.input(COMPOST_PIN)):
         print("COMPOST")
