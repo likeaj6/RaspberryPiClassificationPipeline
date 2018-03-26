@@ -110,4 +110,5 @@ def run_average():
     return distance
 
 if __name__ == "__main__":
-        while True:
+    run_average()
+        # while True:
