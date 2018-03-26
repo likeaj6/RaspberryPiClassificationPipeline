@@ -86,7 +86,7 @@ def main():
             camera.start_preview()
             while True:
                 # livestream mode:
-                if run_average() <= 50 && !IMAGE_DETECTED:
+                if run_average() <= 50 and !IMAGE_DETECTED:
                     print('Motion Detected!')
                     IMAGE_DETECTED = True
                     camera.capture(stream)
@@ -100,6 +100,8 @@ def main():
                     time.sleep(3)
                     classification = feedback_buttons.getButtonFeedback()
                     server_requests.buttonFeedbackRequest(classification)
+
+                    IMAGE_DETECTED = False
                     # npImage = convertStreamToNumpy(stream)
                     # preprocessed = prep_numpy(npImage)
                     # infer_image(sess, input_operation, output_operation, preprocessed, WIDTH, HEIGHT)
