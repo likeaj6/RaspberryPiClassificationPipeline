@@ -1,4 +1,6 @@
 from __future__ import division
+
+import RPi.GPIO as GPIO
 import time
 import picamera
 import numpy as np
