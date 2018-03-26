@@ -86,7 +86,7 @@ def main():
             camera.start_preview()
             while True:
                 # livestream mode:
-                if run_average() <= 50 and !IMAGE_DETECTED:
+                if run_average() <= 50 and not IMAGE_DETECTED:
                     print('Motion Detected!')
                     IMAGE_DETECTED = True
                     camera.capture(stream)
