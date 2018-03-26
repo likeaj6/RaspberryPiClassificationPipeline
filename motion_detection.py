@@ -6,7 +6,7 @@
 import time
 import RPi.GPIO as GPIO
 
-ultra_adc = 0
+from constants import *
 
 def setUpGPIO():
     GPIO.setmode(GPIO.BCM)
