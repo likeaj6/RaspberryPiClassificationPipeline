@@ -97,10 +97,10 @@ def main():
             print('Sending request!')
             # upload(filename)
             # print('Uploading image')
-
-            time.sleep(3)
+            
             classification = feedback_buttons.getButtonFeedback()
             server_requests.buttonFeedbackRequest(classification)
+
 
             IMAGE_DETECTED = False
             # npImage = convertStreamToNumpy(stream)
