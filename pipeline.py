@@ -93,29 +93,31 @@ def main():
             filteredValue-= 1
         else:
             filteredValue+= 0.01
-       
+
         print(filteredValue)
         if distance <= 30 and not IMAGE_DETECTED:
             print('Motion Detected!')
             IMAGE_DETECTED = True
             # camera.capture(stream)
+            try:
+                server_requests.motionDetectedRequest()
+                print('Sending request!')
+                # upload(filename)
+                # print('Uploading image')
+                time.sleep(2)
+                classification = feedback_buttons.getButtonFeedback()
+                filteredValue = 40
+                if classification == None:
+                    IMAGE_DETECTED = False
+                    pass
+                else:
+                    print('GETTING USER FEEDBACK')
+                    print(classification)
+                    server_requests.buttonFeedbackRequest(classification)
 
-            server_requests.motionDetectedRequest()
-            print('Sending request!')
-            # upload(filename)
-            # print('Uploading image')
-            time.sleep(2)
-            classification = feedback_buttons.getButtonFeedback()
-            filteredValue = 40
-            if classification == None:
-                IMAGE_DETECTED = False
-                pass
-            else:
-                print('GETTING USER FEEDBACK')
-                print(classification)
-                server_requests.buttonFeedbackRequest(classification)
-
-                IMAGE_DETECTED = False
+                    IMAGE_DETECTED = False
+            except:
+                continue
 
 
             # npImage = convertStreamToNumpy(stream)
