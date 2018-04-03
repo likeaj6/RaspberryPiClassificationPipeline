@@ -81,13 +81,21 @@ def main():
     filename = getDateTime() + '.jpg'
     stream = open(IMAGE_DIRECTORY + filename, 'w+b')
     #with tf.Session(graph=graph) as sess:
+    filteredValue = 41
     while True:
         print('in loop!')
         # with picamera.PiCamera() as camera:
             # setUpCamera(camera)
             # camera.start_preview()
             # livestream mode:
-        if run_average() <= 35 and not IMAGE_DETECTED:
+        distance = run_average()
+        if distance <= filteredValue:
+            filteredValue-= 1
+        else:
+            filteredValue+= 0.01
+       
+        print(filteredValue)
+        if distance <= 30 and not IMAGE_DETECTED:
             print('Motion Detected!')
             IMAGE_DETECTED = True
             # camera.capture(stream)
@@ -98,7 +106,7 @@ def main():
             # print('Uploading image')
             time.sleep(2)
             classification = feedback_buttons.getButtonFeedback()
-
+            filteredValue = 40
             if classification == None:
                 IMAGE_DETECTED = False
                 pass
